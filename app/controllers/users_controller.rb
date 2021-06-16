@@ -1,13 +1,14 @@
 class UsersController < ApplicationController
   
   def new
-
+    @user = User.new
   end
 
   def create
     if user_params[:password] == user_params[:password_confirmation] then 
+      puts "Params > #{user_params}"
       @user = User.create(user_params)
-      # @user.save
+      puts "@User > #{@user.name}, #{@user.id}"
       session[:user_id] = @user.id
       redirect_to users_path
     else
@@ -18,6 +19,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:name, :password, :password_confirmation)
+    params.require(:user).permit(:name, :password, :password_confirmation)
   end
 end
